@@ -1,0 +1,44 @@
+What is tfstate files:
+  -Terraform.tfstate file contains information about proviosined infrasture managed by terraform
+  -whenever we change the configuration file tfstate file determines which part of configuration is already created and which need to be changed
+ 
+ Data Sources:
+  -It allows terraform to use data defined outside of terraform, defined by another separate terraform configuration or modified functions.
+  -data sources is accessed by using data resource, defined by "data"  block
+  
+ Dynamic block:
+  -When ever we need to define same code multiple times, instead of copying the code we use dynamic blocks
+  example:
+      locals{
+            ingress_rules=[{
+            port = 80
+            description = "enable 80 port"
+            },
+            {
+            port = 8080
+            description = "enable 8080 port"
+            }]
+           }
+          resource "security_groups" "example"{
+          name = "security_groups_for_dynamic_block"
+          vpc_id = aws_vpc.....
+          dynamic "ingress"{
+              for_each = locals.ingress_rules
+              content{
+                  description = ingress.value.description
+                  from_port = ingress.value.port
+                  to_port = ingress.value.port
+                  type = "tcp"
+                  cide_block = "0.0.0.0/0"
+                  }
+                  }
+                  }
+     
+     Null Resources:
+     
+      - null resorce implements the standard resource lifecycle but takes no further action
+      
+      
+     
+          
+        
